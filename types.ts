@@ -6,18 +6,43 @@ export enum AdType {
   PREMIUM = 'PREMIUM' // R$ 3.90/dia - Top of list
 }
 
+export interface StoreReview {
+  id: string;
+  user: string;
+  rating: number;
+  text: string;
+  date: string;
+}
+
 export interface Store {
   id: string;
   name: string;
   category: string;
+  subcategory: string;
   image: string;
   rating: number;
-  distance: string;
+  distance: string; // Legacy distance string
   adType: AdType;
   description: string;
   cashback?: number; // Percentage
   isMarketplace?: boolean; // Determines if it appears in "Achadinhos"
-  price?: number; // Price for the "Achadinho" item/deal
+  price_original?: number;
+  price_current?: number;
+  
+  // Detailed fields
+  address?: string;
+  phone?: string;
+  hours?: string;
+  gallery?: string[];
+  reviews?: StoreReview[];
+  verified?: boolean;
+  
+  // New fields for detailed store list
+  reviewsCount?: number;
+  distanceKm?: number;
+  isOpenNow?: boolean;
+  closingTime?: string;
+  isSponsored?: boolean;
 }
 
 export interface Category {
@@ -34,6 +59,14 @@ export interface Story {
   isLive?: boolean;
 }
 
+export interface Channel {
+  id: string;
+  name: string;
+  image: string;
+  followers: string;
+  verified: boolean;
+}
+
 export interface ServiceLead {
   id: string;
   title: string; // e.g., "Pintura de Apartamento"
@@ -48,4 +81,26 @@ export interface ChatMessage {
   role: 'user' | 'model';
   text: string;
   isLoading?: boolean;
+}
+
+export interface Transaction {
+  id: string;
+  storeName: string;
+  date: string;
+  amount: number;
+  cashbackAmount: number;
+  status: 'completed' | 'pending';
+}
+
+export interface LocalTransaction {
+  id: string;
+  type: 'bonus' | 'purchase';
+  value: number;
+  source: string; // 'spinwheel' or store name
+  date: string; // ISO string
+}
+
+export interface LocalUserWallet {
+  balance: number;
+  transactions: LocalTransaction[];
 }
